@@ -8,7 +8,7 @@
 
 In this workshop you will continue learning about shaders, with a 
 particular emphasis on vertex shaders. Vertex shaders are useful for 
-manipulating meshes in real-time without needing to regenerate 
+manipulating meshes in real-time without needing to continually regenerate 
 geometry on the CPU, which is typically a lot slower. A vertex shader
 is actually rather simple -- it's a _function_ that takes an untransformed
 vertex as input, transforms it in some way, and returns the transformed
@@ -40,7 +40,7 @@ Open `WaveShader.shader` and examine the vertex shader. Take note of the
 displacement vector. What effect does it have, if any, currently? Is it
 applied before or after the MVP transform?
 
-> **Info**<br>
+> **Note**<br>
 > For the next tasks, namely
 > up until task 6, you only need to modify this 
 > vector to solve the respective problems!
@@ -113,13 +113,13 @@ shader again
 you'll see that the MVP transformation is occuring _after_ the wave transformation. 
 
 Recall that `UNITY_MATRIX_MVP` captures three linear transformations "in sequence": 
-1. Transforms vertices from model coordinates to world coordinates, derived from the rendered object's `Transform`.
+1. Transforms vertices from model coordinates to world coordinates, essentially the object's `Transform`.
 2. Transforms vertices from world coordinates to view coordinates, such that the camera is at (0, 0, 0) looking "forward" (identity transform). This
 is the _inverse_ of the camera game object's `Transform`. 
 3. Projects vertices in view coordinates to normalised screen coordinates ("2D" space), either using perspective or orthographic projection.
 
-> **Info**<br>
-> It might surprise you that the MVP matrix is four dimensional (4x4), rather than three dimensional. 
+> **Note**<br>
+> Given the world is 3D, it might surprise you that the MVP matrix is four dimensional (4x4). 
 > At risk of over-simplifying some [complex but very interesting maths](https://en.wikipedia.org/wiki/Homogeneous_coordinates#Use_in_computer_graphics_and_computer_vision),
 > the core reason for this is that we are 
 > capturing translation as part of the matrix, rather than keeping a separate vector alongside it.
@@ -150,7 +150,7 @@ no `UNITY_MATRIX_MP` matrix, so you'll need to construct it yourself
 using the HLSL `mul` function. 
 
 > **Warning**<br>
-> Unfortunately the model matrix doesn't follow the `UNITY_MATRIX_*` naming convention that
+> The model matrix doesn't follow the `UNITY_MATRIX_*` naming convention that
 > the others do. Once again,
 > [this](https://docs.unity3d.com/Manual/SL-UnityShaderVariables.html) page should come
 > in handy if you forgot the names of the partial matrix products available.
@@ -206,17 +206,18 @@ There are a few classes/utilities you may use to make your life easier:
 - You may use [`Matrix4x4.TRS`](https://docs.unity3d.com/ScriptReference/Matrix4x4.TRS.html), a helper function that constructs a matrix from a `Vector3` position, `Quaternion` rotation and `Vector3` scale.
 - You may use [`Matrix4x4.Perpsective`](https://docs.unity3d.com/ScriptReference/Matrix4x4.Projection.html) to assist with generating the projection matrix.
 
-> **Info**<br>
+> **Note**<br>
 > It might help to solve this problem one matrix at a time. The `M` matrix is simplest, so start
 > with that one. To test that it's working, pass it to your shader then multiply it by
 > `UNITY_MATRIX_VP`, which you know is correct. 
 
-To fully solve this problem you'll need to consider how coordinate systems vary between DirectX and OpenGL. 
+Note that to fully solve this problem you'll need to consider how coordinate systems vary between DirectX and OpenGL. 
 While Unity scenes and HLSL code both assume left-handed coordinates,
 it's not so simple behind the scenes, as the 
 underlying graphics API might not be DirectX. Also be aware that [HLSL may get cross-compiled](https://docs.unity3d.com/Manual/shader-compilation.html)
 to the OpenGL equivalent (GLSL), again depending on the underlying graphics API. While you won't need
-to work with GLSL code, there is a presumption of right-handed coordinates being used in MVP (N.B. This is pretty complex stuff,
+to work with GLSL code directly here, there is a presumption of right-handed 
+coordinates being used in MVP (N.B. This is pretty complex stuff,
 and the more you become aware of it, the more you appreciate using a pre-built game engine over rolling your own!)
 
 All in all, this exercise will likely require a bit of trial and error, as well as research. Give it your
