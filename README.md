@@ -204,7 +204,7 @@ There are a few classes/utilities you may use to make your life easier:
 - Unity comes with a [`Matrix4x4`](https://docs.unity3d.com/ScriptReference/Matrix4x4.html) class to represent a matrix, so you don't need to do this.
 - The `Material` class has a [`SetMatrix`](https://docs.unity3d.com/ScriptReference/Material.SetMatrix.html) method utilising to this class. This lets you pass a matrix to a shader.
 - You may use [`Matrix4x4.TRS`](https://docs.unity3d.com/ScriptReference/Matrix4x4.TRS.html), a helper function that constructs a matrix from a `Vector3` position, `Quaternion` rotation and `Vector3` scale.
-- You may use [`Matrix4x4.Perpsective`](https://docs.unity3d.com/ScriptReference/Matrix4x4.Projection.html) to assist with generating the projection matrix.
+- You may use [`Matrix4x4.Perspective`](https://docs.unity3d.com/ScriptReference/Matrix4x4.Perspective.html) to assist with generating the projection matrix.
 
 > **Note**<br>
 > It might help to solve this problem one matrix at a time. The `M` matrix is simplest, so start
